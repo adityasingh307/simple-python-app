@@ -23,7 +23,7 @@ phases:
       - pwd
       - echo "Files in repo:"
       - ls -la
-      - echo "Docker username: $DOCKER_USERNAME"
+      - echo "Docker username --- $DOCKER_USERNAME"
       - docker build -t "${DOCKER_USERNAME}/simple-python-app:latest" .
       - docker images
       - docker push "${DOCKER_USERNAME}/simple-python-app:latest"
