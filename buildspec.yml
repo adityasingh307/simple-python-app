@@ -1,0 +1,31 @@
+version: 0.2
+
+env:
+  parameter-store:
+    DOCKER_USERNAME: /myapp/docker_username
+    DOCKER_PASSWORD: /myapp/docker_password
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+
+  pre_build:
+    commands:
+      - echo "Installing dependencies..."
+      - pip install -r requirements.txt
+      - echo "Logging in to Docker Hub..."
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+  build:
+    commands:
+      - echo "Running tests..."
+      - pytest
+      - echo "Building Docker image..."
+      - docker build -t "${DOCKER_USERNAME}/simple-python-app:latest" .
+
+  post_build:
+    commands:
+      - echo "Build completed successfully."
+      - echo "Pushing Docker image to Docker Hub..."
+      - docker push "${DOCKER_USERNAME}/simple-python-app:latest"
