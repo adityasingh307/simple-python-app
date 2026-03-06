@@ -19,15 +19,11 @@ phases:
 
   build:
     commands:
-      - echo "Current directory:"
-      - pwd
-      - echo "Files in repo:"
-      - ls -la
-      - echo "Docker username --- $DOCKER_USERNAME"
+      - echo "Building the Docker image..."
       - docker build -t "${DOCKER_USERNAME}/simple-python-app:latest" .
-      - docker images
-      - docker push "${DOCKER_USERNAME}/simple-python-app:latest"
 
   post_build:
     commands:
+      - echo "Pushing the Docker image to Docker Hub..."
+      - docker push "${DOCKER_USERNAME}/simple-python-app:latest"
       - echo "Build completed successfully."
